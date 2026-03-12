@@ -37,12 +37,13 @@ Parameters:
 
   OpenClawModel:
     Type: String
-    Default: "us.deepseek.r1-v1:0"
+    Default: "moonshotai.kimi-k2.5"
     Description: "Bedrock model ID"
     AllowedValues:
-      - "us.deepseek.r1-v1:0"
       - "moonshotai.kimi-k2.5"
       - "minimax.minimax-m2.1"
+      - "qwen.qwen3-next-80b-a3b"
+      - "deepseek.r1-v1:0"
       - "qwen.qwen3-next-80b-a3b"
 
   InstanceType:
@@ -321,6 +322,14 @@ Resources:
                   Action:
                     - 'bedrock:InvokeModel'
                     - 'bedrock:InvokeModelWithResponseStream'
+                  Resource:
+                    - !Sub 'arn:${AWS::Partition}:bedrock:*::foundation-model/moonshotai.kimi-k2.5'
+                    - !Sub 'arn:${AWS::Partition}:bedrock:*::foundation-model/minimax.minimax-m2.1'
+                    - !Sub 'arn:${AWS::Partition}:bedrock:*::foundation-model/qwen.qwen3-next-80b-a3b'
+                    - !Sub 'arn:${AWS::Partition}:bedrock:*::foundation-model/deepseek.r1-v1:0'
+                    - !Sub 'arn:${AWS::Partition}:bedrock:*:${AWS::AccountId}:inference-profile/*'
+                - Effect: Allow
+                  Action:
                     - 'bedrock:ListFoundationModels'
                     - 'bedrock:GetFoundationModel'
                   Resource: '*'
